@@ -32,6 +32,9 @@ class AStarVisualizer(QMainWindow):
         self.grid_container = QWidget()
         self.grid_layout = QGridLayout(self.grid_container)
         self.grid_layout.setSpacing(0)
+        self.grid_layout.setContentsMargins(0, 0, 0, 0)
+
+        self.grid_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.main_layout.addWidget(self.grid_container)
 
         # виджет настроек
@@ -50,7 +53,7 @@ class AStarVisualizer(QMainWindow):
 
         self.main_layout.addWidget(self.controls_widget)
 
-        self.init_grid(rows=20, cols=20)
+        self.init_grid(rows=75, cols=40)
 
     def init_grid(self, rows, cols):
         """
@@ -59,6 +62,33 @@ class AStarVisualizer(QMainWindow):
         self.rows = rows
         self.cols = cols
         self.grid_cells = {}
+
+        for i in reversed(range(self.grid_layout.count())):
+            item = self.grid_layout.itemAt(i)
+            widget = item.widget()
+            if widget is not None:
+                widget.setParent(None)
+            self.grid_layout.removeItem(item)
+
+        for r in range(rows):
+            for c in range(cols):
+                cell = QWidget()
+                cell.setObjectName(f"cell_{r}_{c}")
+                border_right = "1px solid #ddd;" if c < cols - 1 else "none;"
+                border_bottom = "1px solid #ddd;" if r < rows - 1 else "none;"
+
+                cell.setStyleSheet(f"""
+                    background-color: white;
+                    border-right: {border_right};
+                    border-bottom: {border_bottom};
+                    /* Также убираем padding и margin, чтобы быть уверенным */
+                    padding: 0;
+                    margin: 0;
+                """)
+
+                cell.setFixedSize(8, 8)
+                self.grid_layout.addWidget(cell, r, c)
+                self.grid_cells[(r, c)] = cell
 
 
 if __name__ == "__main__":
