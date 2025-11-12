@@ -13,6 +13,36 @@ from PyQt6.QtWidgets import (
 )
 
 
+class Node:
+    """
+    храниние информации про каждую клетку сетки
+    """
+
+    def __init__(self, row, col):
+        self.row = row
+        self.col = col
+
+        self.g_cost = float("inf")
+        self.h_cost = 0
+        self.f_cost = float("inf")
+
+        self.parent = None
+
+        self.is_wall = False
+        self.is_start = False
+        self.is_end = False
+
+    def __lt__(self, other):
+        return self.f_cost < other.f_cost
+
+    def calculate_h_cost(self, end_node):
+        """вычисление манхэттенского расстояния"""
+        dr = abs(self.row - end_node.row)
+        dc = abs(self.col - end_node.col)
+        self.h_cost = dr + dc
+        self.f_cost = self.h_cost + self.g_cost
+
+
 class AStarVisualizer(QMainWindow):
     """
     Основное окно визуализации
