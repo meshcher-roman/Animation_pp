@@ -1,6 +1,6 @@
 import sys
 
-from PyQt6.QtCore import Qt
+from PyQt6.QtCore import Qt, pyqtSignal
 from PyQt6.QtWidgets import (
     QApplication,
     QGridLayout,
@@ -41,6 +41,55 @@ class Node:
         dc = abs(self.col - end_node.col)
         self.h_cost = dr + dc
         self.f_cost = self.h_cost + self.g_cost
+
+
+class NodeWidget(QWidget):
+    clicked = pyqtSignal(int, int)
+
+    STATE_COLORS = {
+        0: "white",  # пустая клетка
+        1: "#212121",  # стена
+        2: "#2e7d32",  # старт
+        3: "#b71c1c",  # конец
+        4: "#a5d6a7",  # открытая клетка
+        5: "#ef9a9a",  # закрытая клетка
+        6: "#ff80ab",  # кратчайший путь
+    }
+
+    def __init__(self, r, c, fixed_size=8):
+        super().__init__()
+        self.row = r
+        self.col = c
+        self.state = 0
+        self.setFixedSize(fixed_size, fixed_size)
+        self.update_style(r, c)
+
+    def set_state(self, state, rows, cols):
+        """обновление стиля и состояния ячейки"""
+        if self.state == 0:
+            return
+        self.state = state
+        self.update_style(rows, cols)
+
+    def update_style(self, state, rows, cols):
+        """обновление css для ячейки в зависимости от состояния"""
+        border_right = "1px solid #ddd;" if self.col < cols - 1 else "none"
+        border_bottom = "1px solid #ddd;" if self.row < rows - 1 else "none"
+
+        color = self.STATE_COLORS.get(self.state, "white")
+
+        self.setStyleSheet(f"""
+            background-color: {color};
+            border-right: {border_right};
+            border-bottom: {border_bottom};
+            padding: 0;
+            margin: 0;
+            """)
+
+        def mousePressEvent(self, event):
+            """сигнал при клике"""
+            if event.button() == Qt.MouseButton.LeftButton:
+                self.clicked.emit(self.row, self.col)
 
 
 class AStarVisualizer(QMainWindow):
@@ -111,7 +160,6 @@ class AStarVisualizer(QMainWindow):
                     background-color: white;
                     border-right: {border_right};
                     border-bottom: {border_bottom};
-                    /* Также убираем padding и margin, чтобы быть уверенным */
                     padding: 0;
                     margin: 0;
                 """)
