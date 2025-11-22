@@ -1,0 +1,20 @@
+{
+  "grid": {
+    "rows": 33,
+    "cols": 77,
+    "cell_size": 8
+  },
+  "simulation": {
+    "delay_ms": 1,
+    "wall_density": 0.3
+  },
+  "colors": {
+    "empty": [255, 255, 255],
+    "wall": [33, 33, 33],
+    "start": [76, 175, 80],
+    "end": [244, 67, 54],
+    "open": [165, 214, 167],
+    "closed": [239, 154, 154],
+    "path": [156, 39, 176]
+  }
+}
