@@ -173,3 +173,6 @@
         -    start_thread: Инициализирует и запускает AStarWorker.
         
         -    on_cell_updated и on_finished: Слоты, принимающие сигналы от рабочего потока и обновляющие UI (виджет карты и информационную метку).
+
+## Демонстрация работы кода
+<img width="1108" height="915" alt="image" src="https://github.com/user-attachments/assets/44504fe5-8e28-4c6f-9bdd-a1f083a07820" />
