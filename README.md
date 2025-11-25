@@ -1,4 +1,4 @@
-A* Pathfinding Visualizer (PyQt6)
+ # A* Pathfinding Visualizer (PyQt6)
 
 🗺️ Описание проекта
 
